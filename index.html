@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<meta name="description" content="Domain Switcher – כלי פשוט ליצירת כתובות דומיין חלופיות לאתרים שלך.">
+<title>Domain Switcher | החלפת דומיינים</title>
+
+<style>
+:root {
+  --bg: #080b14;
+  --panel: #101725;
+  --panel2: #151f30;
+  --border: rgba(255,255,255,.09);
+  --text: #f4f7ff;
+  --muted: #91a0b8;
+  --blue: #6285ff;
+  --purple: #9574ff;
+  --green: #42d9a0;
+  --red: #ff7777;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% -15%, rgba(76,105,255,.20), transparent 48%),
+    radial-gradient(ellipse at 100% 70%, rgba(133,85,255,.08), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  width: min(100% - 32px, 900px);
+  margin: auto;
+}
+
+header {
+  height: 76px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: linear-gradient(135deg,var(--blue),var(--purple));
+  display: grid;
+  place-items: center;
+  box-shadow: 0 5px 25px rgba(98,133,255,.3);
+}
+
+.logo svg {
+  width: 23px;
+  height: 23px;
+}
+
+.nav-status {
+  font-size: 12px;
+  color: var(--green);
+  border: 1px solid rgba(66,217,160,.2);
+  background: rgba(66,217,160,.07);
+  padding: 8px 12px;
+  border-radius: 30px;
+}
+
+.hero {
+  text-align: center;
+  padding: 68px 0 38px;
+}
+
+.eyebrow {
+  color: #9aafff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(35px,7vw,57px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin: 0 0 18px;
+}
+
+.gradient {
+  background: linear-gradient(90deg,#83a1ff,#b18aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 15px;
+  max-width: 570px;
+  margin: auto;
+}
+
+.main-card {
+  background: linear-gradient(145deg,rgba(20,30,48,.98),rgba(13,19,31,.98));
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 23px;
+  padding: 28px;
+  box-shadow: 0 25px 90px rgba(0,0,0,.28);
+}
+
+.section-heading {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.section-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 23px;
+}
+
+.field {
+  margin-bottom: 21px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+input, select {
+  width: 100%;
+  color: white;
+  background: #0b1220;
+  border: 1px solid #29364d;
+  border-radius: 12px;
+  padding: 16px;
+  outline: none;
+  transition: .2s;
+  direction: ltr;
+  text-align: left;
+}
+
+input:focus, select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(98,133,255,.12);
+}
+
+input::placeholder {
+  color: #65748c;
+}
+
+.hint {
+  font-size: 11px;
+  color: #7889a2;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+select {
+  cursor: pointer;
+}
+
+select option {
+  background: #101725;
+}
+
+.result {
+  margin-top: 29px;
+  padding: 23px;
+  border: 1px solid rgba(98,133,255,.28);
+  border-radius: 17px;
+  background: linear-gradient(120deg,rgba(69,98,191,.13),rgba(139,94,220,.10));
+}
+
+.result-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+}
+
+.result-title {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.preview-label {
+  font-size: 10px;
+  color: #aabaff;
+  background: rgba(98,133,255,.13);
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+.domain-output {
+  direction: ltr;
+  text-align: center;
+  overflow-wrap: anywhere;
+  font-size: clamp(22px,5vw,34px);
+  font-weight: 800;
+  letter-spacing: -.8px;
+  padding: 16px 5px 20px;
+  color: #fff;
+}
+
+.domain-output span {
+  color: #9aabff;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 11px;
+  padding: 14px 18px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.btn-primary {
+  color: white;
+  background: linear-gradient(110deg,#557bfa,#8d68e9);
+  box-shadow: 0 5px 20px rgba(98,133,255,.18);
+}
+
+.btn-secondary {
+  color: #dce5ff;
+  background: #26334b;
+  border: 1px solid #394967;
+}
+
+.result-actions .btn {
+  flex: 1;
+}
+
+.message {
+  min-height: 20px;
+  text-align: center;
+  color: var(--green);
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(255,190,80,.07);
+  border: 1px solid rgba(255,190,80,.18);
+  border-radius: 12px;
+  margin-top: 20px;
+  color: #d9c49d;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.notice strong {
+  color: #ffda91;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 13px;
+  margin: 22px 0 50px;
+}
+
+.info-card {
+  padding: 19px;
+  background: rgba(16,23,37,.8);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.info-icon {
+  font-size: 23px;
+  margin-bottom: 12px;
+}
+
+.info-card strong {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.info-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.guide {
+  margin-bottom: 55px;
+  padding: 27px;
+  background: rgba(16,23,37,.75);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.guide h2 {
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+
+.guide-intro {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 23px;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.step-number {
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(98,133,255,.16);
+  color: #a5b7ff;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+.step-content strong {
+  font-size: 13px;
+}
+
+.step-content p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 6px 0 0;
+}
+
+.guide-link {
+  display: inline-block;
+  color: #a9bbff;
+  font-size: 13px;
+  text-decoration: none;
+  margin-top: 10px;
+  border-bottom: 1px solid #687fe8;
+  padding-bottom: 3px;
+}
+
+.guide-link:hover {
+  color: white;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 25px 0;
+  text-align: center;
+  color: #64738a;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+@media(max-width:650px) {
+  .hero {
+    padding: 48px 0 28px;
+  }
+
+  .main-card {
+    padding: 19px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .guide {
+    padding: 20px;
+  }
+
+  .nav-status {
+    font-size: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white"
+             stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>
+        </svg>
+      </div>
+      Domain Switcher
+    </div>
+    <div class="nav-status">● חינמי לשימוש</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="eyebrow">SIMPLE DOMAIN TOOL</div>
+    <h1>הכתובת שלך.<br><span class="gradient">הסיומת שאתה בוחר.</span></h1>
+    <p>
+      הכנס את כתובת האתר הקיימת שלך, בחר סיומת חדשה
+      וקבל הצעה לכתובת חלופית תוך שניות.
+    </p>
+  </section>
+
+  <section class="main-card">
+
+    <div class="section-heading">יצירת כתובת חדשה</div>
+    <div class="section-sub">
+      מלא את הפרטים ונציג לך את הכתובת החדשה.
+    </div>
+
+    <div class="field">
+      <label for="currentDomain">1. כתובת האתר הנוכחית</label>
+      <div class="input-wrap">
+        <input
+          id="currentDomain"
+          type="text"
+          placeholder="לדוגמה: drormispara.vercel.app"
+          autocomplete="url"
+          spellcheck="false"
+        >
+      </div>
+      <div class="hint">
+        אפשר להכניס כתובת עם https:// או בלי, וגם כתובת הכוללת נתיב.
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="domainName">2. שם הדומיין החדש</label>
+        <input
+          id="domainName"
+          type="text"
+          placeholder="drormispara"
+          spellcheck="false"
+        >
+        <div class="hint">אפשר לשנות את השם באופן עצמאי.</div>
+      </div>
+
+      <div class="field">
+        <label for="extension">3. בחר סיומת</label>
+        <select id="extension">
+          <option value=".com">.com – בינלאומי</option>
+          <option value=".net">.net – רשת</option>
+          <option value=".org">.org – ארגונים</option>
+          <option value=".co.il">.co.il – ישראל</option>
+          <option value=".il">.il – ישראל</option>
+          <option value=".info">.info – מידע</option>
+          <option value=".site">.site – אתר</option>
+          <option value=".online">.online – אונליין</option>
+          <option value=".store">.store – חנות</option>
+          <option value=".website">.website – אתר</option>
+          <option value=".tech">.tech – טכנולוגיה</option>
+          <option value=".dev">.dev – פיתוח</option>
+          <option value=".app">.app – אפליקציה</option>
+          <option value=".xyz">.xyz – כללי</option>
+        </select>
+        <div class="hint">הסיומות המוצגות הן אפשרויות, לא הבטחה לזמינות.</div>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="result-top">
+        <div class="result-title">הכתובת המוצעת שלך</div>
+        <div class="preview-label">תצוגה מקדימה</div>
+      </div>
+
+      <div class="domain-output" id="output">
+        <span>yourname.com</span>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-primary" id="copyBtn" type="button">
+          העתקת הכתובת
+        </button>
+        <button class="btn btn-secondary" id="searchBtn" type="button">
+          חפש אפשרות לרכישה
+        </button>
+      </div>
+
+      <div class="message" id="message" aria-live="polite"></div>
+    </div>
+
+    <div class="notice">
+      <span>⚠️</span>
+      <div>
+        <strong>חשוב לדעת:</strong>
+        הכלי יוצר הצעה לכתובת בלבד. כדי שהדומיין החדש יעבוד,
+        צריך לרשום אותו אצל רשם דומיינים ולחבר אותו לאתר שלך.
+        שינוי הסיומת אינו מעביר בעלות ואינו משנה את הכתובת המקורית.
+      </div>
+    </div>
+
+  </section>
+
+  <section class="info-grid">
+    <div class="info-card">
+      <div class="info-icon">⚡</div>
+      <strong>מהיר ופשוט</strong>
+      <p>הכתובת מתעדכנת מיד כאשר משנים את השם או את הסיומת.</p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-icon">🌐</div>
+      <strong>סיומות מגוונות</strong>
+      <p>מגוון סיומות בינלאומיות וישראליות לבחירה.</p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-icon">🔒</div>
+      <strong>ללא הרשמה</strong>
+      <p>הכלי פועל ישירות בדפדפן. אין צורך בחשבון או בסיס נתונים.</p>
+    </div>
+  </section>
+
+  <section class="guide">
+    <h2>איך מחברים דומיין ל־Vercel?</h2>
+    <p class="guide-intro">
+      אחרי שרכשת את הדומיין החדש, אפשר לחבר אותו לפרויקט הקיים שלך.
+    </p>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <strong>רכוש את הדומיין החדש</strong>
+        <p>
+          בדוק שהדומיין פנוי אצל רשם דומיינים ורכוש אותו.
+          ניתן לבדוק סיומות שונות, אך המחיר והתנאים משתנים.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <strong>היכנס לפרויקט שלך ב־Vercel</strong>
+        <p>
+          פתח את הפרויקט, עבור אל Settings ואז Domains.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <strong>הוסף את הדומיין החדש</strong>
+        <p>
+          הכנס את הכתובת שרכשת ולחץ Add.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <strong>הגדר DNS</strong>
+        <p>
+          Vercel יציג לך את רשומות ה-DNS המתאימות.
+          העתק אותן להגדרות הדומיין אצל הרשם.
+          אין להשתמש בערכים קבועים בלי לבדוק מה Vercel דורש בפרויקט שלך.
+        </p>
+      </div>
+    </div>
+
+    <a
+      class="guide-link"
+      href="https://vercel.com/docs/domains"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      מדריך הדומיינים הרשמי של Vercel ←
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    Domain Switcher © 2026
+    <br>
+    כלי חינמי להצעת כתובות דומיין חלופיות.
+    אין כאן שירות רישום או הבטחת זמינות של דומיינים.
+  </div>
+</footer>
+
+<script>
+const currentInput = document.getElementById("currentDomain");
+const nameInput = document.getElementById("domainName");
+const extensionInput = document.getElementById("extension");
+const output = document.getElementById("output");
+const message = document.getElementById("message");
+const copyBtn = document.getElementById("copyBtn");
+const searchBtn = document.getElementById("searchBtn");
+
+const platformSuffixes = [
+  "vercel.app",
+  "netlify.app",
+  "pages.dev",
+  "github.io",
+  "web.app",
+  "firebaseapp.com",
+  "surge.sh",
+  "onrender.com",
+  "fly.dev",
+  "workers.dev"
+];
+
+const knownMultiSuffixes = [
+  "co.il",
+  "org.il",
+  "net.il",
+  "ac.il",
+  "com.au",
+  "co.uk",
+  "org.uk",
+  "co.nz"
+];
+
+function cleanHost(value) {
+  let text = value.trim();
+
+  if (!text) return null;
+
+  // Support URLs with or without protocol.
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(text)) {
+    text = "https://" + text;
+  }
+
+  try {
+    const url = new URL(text);
+    let host = url.hostname.toLowerCase();
+
+    // Remove trailing dot.
+    host = host.replace(/\.$/, "");
+
+    return host || null;
+  } catch {
+    return null;
+  }
+}
+
+function getSuggestedName(host) {
+  const parts = host.split(".");
+
+  if (parts.length < 2) return "";
+
+  // Remove www.
+  if (parts[0] === "www") {
+    parts.shift();
+  }
+
+  const normalized = parts.join(".");
+
+  // Hosting platform domains: use the project name.
+  for (const suffix of platformSuffixes) {
+    if (normalized.endsWith("." + suffix)) {
+      const prefix = normalized.slice(0, -(suffix.length + 1));
+      return prefix.split(".").pop() || "";
+    }
+  }
+
+  // Known multi-part suffixes, e.g. example.co.il.
+  for (const suffix of knownMultiSuffixes) {
+    if (normalized.endsWith("." + suffix)) {
+      const prefix = normalized.slice(0, -(suffix.length + 1));
+      return prefix.split(".").pop() || "";
+    }
+  }
+
+  // For ordinary domains, use the main name.
+  return parts.length >= 2 ? parts[parts.length - 2] : parts[0];
+}
+
+function isValidName(name) {
+  if (!name || name.length < 1 || name.length > 63) return false;
+
+  // DNS label: letters, numbers, and internal hyphens.
+  // Hebrew and other Unicode names are intentionally not accepted here.
+  return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(name);
+}
+
+function updateOutput() {
+  const name = nameInput.value.trim().toLowerCase();
+  const extension = extensionInput.value;
+
+  if (!isValidName(name)) {
+    output.innerHTML = '<span>הכנס שם דומיין תקין</span>';
+    return false;
+  }
+
+  const domain = name + extension;
+
+  output.textContent = domain;
+  return domain;
+}
+
+function showMessage(text, color) {
+  message.textContent = text;
+  message.style.color = color || "var(--green)";
+}
+
+currentInput.addEventListener("input", () => {
+  const host = cleanHost(currentInput.value);
+
+  if (!host) {
+    showMessage("הכנס כתובת אתר תקינה", "var(--red)");
+    return;
+  }
+
+  const suggested = getSuggestedName(host);
+
+  if (suggested) {
+    nameInput.value = suggested;
+    updateOutput();
+    showMessage("זיהינו את שם האתר בהצלחה.");
+  }
+});
+
+nameInput.addEventListener("input", () => {
+  updateOutput();
+  showMessage("");
+});
+
+extensionInput.addEventListener("change", () => {
+  updateOutput();
+  showMessage("");
+});
+
+copyBtn.addEventListener("click", async () => {
+  const domain = updateOutput();
+
+  if (!domain) {
+    showMessage("יש לתקן את שם הדומיין לפני ההעתקה.", "var(--red)");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(domain);
+    showMessage("הכתובת הועתקה בהצלחה!");
+  } catch {
+    // Fallback for browsers that block clipboard access.
+    const temporary = document.createElement("textarea");
+    temporary.value = domain;
+    temporary.style.position = "fixed";
+    temporary.style.opacity = "0";
+    document.body.appendChild(temporary);
+    temporary.select();
+
+    const copied = document.execCommand("copy");
+    temporary.remove();
+
+    showMessage(
+      copied ? "הכתובת הועתקה בהצלחה!" : "לא הצלחנו להעתיק. סמן והעתק ידנית.",
+      copied ? "var(--green)" : "var(--red)"
+    );
+  }
+});
+
+searchBtn.addEventListener("click", () => {
+  const domain = updateOutput();
+
+  if (!domain) {
+    showMessage("יש להזין שם דומיין תקין.", "var(--red)");
+    return;
+  }
+
+  const query = encodeURIComponent(
+    '"' + domain + '" domain registration purchase'
+  );
+
+  window.open(
+    "https://www.google.com/search?q=" + query,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+  showMessage(
+    "נפתחה חיפוש ברשת. יש לוודא זמינות ומחיר אצל הרשם."
+  );
+});
+
+// Initial display
+updateOutput();
+</script>
+
+</body>
+</html>
